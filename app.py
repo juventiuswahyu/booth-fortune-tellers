@@ -31,7 +31,7 @@ st.markdown("""
 st.title("🔮 AI BUSINESS FORTUNE TELLER")
 st.caption("Ramal Potensi Bisnis Masa Depanmu Berdasarkan 3 Kartu Modalku! (Teori Effectuation)")
 
-# --- DAFTAR PILIHAN DROPDOWN (10 VARIASI PER KARTU) ---
+# --- DAFTAR PILIHAN DROPDOWN ---
 
 WHO_OPTIONS = [
     "📱 Suka bikin konten TikTok / Reels & hits",
@@ -107,23 +107,28 @@ if submitted:
             whom_str = ", ".join(selected_whom) if selected_whom else "Tidak diisi"
 
             prompt = f"""
-            Kamu adalah AI "Business Fortune Teller" inspiratif untuk prodi Kewirausahaan.
-            Gunakan Teori Effectuation dari Saras Sarasvathy (Prinsip "Bird-in-Hand").
+            Tugasmu adalah merekomendasikan bisnis yang sangat cocok berdasarkan modal Effectuation ("Bird-in-Hand") siswa.
 
-            Data Siswa:
-            - Nama: {nama if nama else 'Siswa Kreatif'}
+            Data Input Siswa:
+            - Nama: {nama if nama else 'Siswa'}
             - Cita-Cita: {target}
-            - Modal Kartu 1 (Who I Am): {who_str}
-            - Modal Kartu 2 (What I Know): {what_str}
-            - Modal Kartu 3 (Whom I Know): {whom_str}
+            - Kartu 1 (Who I Am): {who_str}
+            - Kartu 2 (What I Know): {what_str}
+            - Kartu 3 (Whom I Know): {whom_str}
 
-            Buatkan hasil ramalan bisnis format Markdown:
-            ### 🏆 Julukan Bisnis Masa Depan
-            ### 💡 Konsep Bisnis 'Bird-in-Hand' (Tabel/Poin menggabungkan modal yang mereka pilih di atas)
-            ### 📊 Skor Potensi Ide (Keunikan % & Kemudahan Eksekusi %)
-            ### 🚀 Langkah Pertama Hari Ini (Aksi konkret tanpa modal uang besar)
+            INSTRUKSI HASIL OUTPUT (JANGAN masukkan teks promo prodi atau intro panjang):
+            Format output HANYA 2 bagian berikut menggunakan Markdown:
 
-            Gunakan bahasa kasual, ramah anak muda, dan memotivasi.
+            ### 🔮 Bisnis yang Sangat Cocok Untukmu
+            **[Nama Ide Bisnis Utama yang Spesifik & Menarik]**
+            [Penjelasan singkat 2-3 kalimat mengenai gambaran bisnisnya]
+
+            ### 💡 Mengapa Bisnis Ini Cocok Denganmu?
+            - **Berdasarkan Siapa Dirimu (Who I Am):** [Jelaskan hubungan modal 1 dengan bisnis]
+            - **Berdasarkan Apa yang Kamu Tahu (What I Know):** [Jelaskan hubungan modal 2 dengan bisnis]
+            - **Berdasarkan Siapa yang Kamu Kenal (Whom I Know):** [Jelaskan hubungan modal 3 dengan bisnis]
+
+            Gunakan bahasa kasual, suportif, dan ramah anak muda.
             """
 
             try:
@@ -149,7 +154,5 @@ if submitted:
                     
                     st.success("Ramalan Selesai!")
                     st.markdown(ai_result)
-                    st.divider()
-                    st.info("💡 **Mau bikin ramalan ini jadi nyata?** Pelajari Effectuation & Kembangkan bisnismu di Program Studi Kewirausahaan!")
             except Exception as e:
                 st.error(f"Gagal memproses ramalan: {str(e)}")

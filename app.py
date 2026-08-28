@@ -11,7 +11,7 @@ st.set_page_config(
 
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
 
-# --- STYLING UI KEREN (LIGHT THEME & ELEGANT PURPLE) ---
+# --- STYLING UI LIGHT THEME ---
 st.markdown("""
     <style>
     /* Latar Belakang Utama Halaman (Putih Bersih) */
@@ -26,7 +26,7 @@ st.markdown("""
         text-align: center;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-weight: 800;
-        margin-top: 10px;
+        margin-top: 5px;
     }
     .stCaption {
         text-align: center;
@@ -41,7 +41,7 @@ st.markdown("""
         border: 2px solid #e2e8f0 !important;
         border-radius: 20px !important;
         padding: 24px !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
     }
 
     /* Label Input */
@@ -91,21 +91,14 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45);
     }
-
-    /* Box Hasil Markdown */
-    div[data-testid="stMarkdownContainer"] p {
-        color: #1e293b;
-    }
     </style>
 """, unsafe_allow_html=True)
 
-# --- ANIMASI BOLA KRISTAL BERGERAK ---
-col1, col2, col3 = st.columns([1, 1, 1])
+# --- MENAMPILKAN GAMBAR GIPHY.GIF DARI GITHUB ---
+col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image(
-        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWc1b3N6bXZyeGF3MnV4OGd5ZnQ4Z2NzaWc4aDlhMnEzZ3ZtdnA3ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKsjLu182aQvNbc/giphy.gif",
-        use_container_width=True
-    )
+    if os.path.exists("giphy.gif"):
+        st.image("giphy.gif", use_container_width=True)
 
 st.title("AI BUSINESS FORTUNE TELLER")
 st.caption("Ramal Potensi Bisnis Masa Depanmu Berdasarkan 3 Kartu Modalku! (Teori Effectuation)")

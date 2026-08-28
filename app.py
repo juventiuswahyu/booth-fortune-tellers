@@ -30,14 +30,15 @@ st.markdown("""
         letter-spacing: 0.5px;
     }
     
-    /* Keterangan / Subtitle Akademik */
-    .stCaption {
+    /* Subtitle Akademik Rata Tengah */
+    .academic-subtitle {
         text-align: center;
-        color: #475569 !important;
+        color: #475569;
         font-size: 14px;
         font-weight: 500;
-        line-height: 1.5;
+        line-height: 1.6;
         margin-bottom: 25px;
+        padding: 0 10px;
     }
 
     /* Container Form Input dengan Frame GOLD */
@@ -114,7 +115,13 @@ with col2:
         st.image("giphy.gif", use_container_width=True)
 
 st.title("AI BUSINESS POTENTIAL NAVIGATOR")
-st.caption("Asisten Berbasis AI yang Dikembangkan oleh Program Studi Manajemen Universitas Nasional Karangturi Semarang untuk Menganalisis Potensi Bisnis Generasi Muda Berdasarkan Teori Effectuation")
+
+# Subtitle Rata Tengah (Center)
+st.markdown("""
+    <div class="academic-subtitle">
+        Asisten Berbasis Artificial Intelligence (AI) yang Dikembangkan oleh Program Studi Manajemen Universitas Nasional Karangturi Semarang untuk Menganalisis Potensi Bisnis Generasi Muda Berdasarkan Teori Effectuation (Prof. Saras D. Sarasvathy, Ph.D. - University of Virginia).
+    </div>
+""", unsafe_allow_html=True)
 
 # --- DAFTAR PILIHAN DROPDOWN ---
 

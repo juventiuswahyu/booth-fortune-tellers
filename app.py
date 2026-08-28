@@ -11,56 +11,57 @@ st.set_page_config(
 
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
 
-# --- STYLING UI KEREN (DARK THEME & NEON ACCENTS) ---
+# --- STYLING UI KEREN (LIGHT THEME & ELEGANT PURPLE) ---
 st.markdown("""
     <style>
-    /* Latar Belakang Utama Halaman */
+    /* Latar Belakang Utama Halaman (Putih Bersih) */
     .stApp {
-        background: linear-gradient(135deg, #0f0c20 0%, #150d2a 50%, #090614 100%);
-        color: #e2e8f0;
+        background-color: #f8fafc;
+        color: #0f172a;
     }
     
     /* Title & Caption */
     h1 {
-        color: #c084fc !important;
+        color: #6d28d9 !important;
         text-align: center;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-weight: 800;
-        text-shadow: 0 0 12px rgba(192, 132, 252, 0.4);
+        margin-top: 10px;
     }
     .stCaption {
         text-align: center;
-        color: #94a3b8 !important;
+        color: #64748b !important;
         font-size: 15px;
+        font-weight: 500;
     }
 
-    /* Container Form (Dahulu Putih, Sekarang Ungu Gelap Modern) */
+    /* Container Form Input */
     div[data-testid="stForm"] {
-        background-color: #17122b !important;
-        border: 1px solid rgba(168, 85, 247, 0.3) !important;
-        border-radius: 16px !important;
+        background-color: #ffffff !important;
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 20px !important;
         padding: 24px !important;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
     }
 
     /* Label Input */
     label, div[data-testid="stWidgetLabel"] p {
-        color: #f1f5f9 !important;
-        font-weight: 600 !important;
+        color: #334155 !important;
+        font-weight: 700 !important;
     }
 
     /* Input Text & Selectbox Background */
     div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-        background-color: #241c3f !important;
-        border-color: #4c1d95 !important;
-        color: #ffffff !important;
-        border-radius: 8px !important;
+        background-color: #f1f5f9 !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+        border-radius: 10px !important;
     }
 
     /* Tag Pilihan Multiselect (Chips) */
     span[data-baseweb="tag"] {
-        background: linear-gradient(135deg, #7e22ce 0%, #3b82f6 100%) !important;
-        border-radius: 6px !important;
+        background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%) !important;
+        border-radius: 8px !important;
     }
     span[data-baseweb="tag"] span {
         color: #ffffff !important;
@@ -69,35 +70,44 @@ st.markdown("""
 
     /* Subheader di Dalam Form */
     h3 {
-        color: #38bdf8 !important;
+        color: #4c1d95 !important;
+        font-size: 1.2rem !important;
     }
 
     /* Tombol Utama (Button) */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(135deg, #9333ea 0%, #06b6d4 100%);
+        background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
         color: #ffffff;
         font-weight: bold;
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 14px;
         border: none;
         font-size: 18px;
-        box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+        box-shadow: 0 4px 14px rgba(124, 58, 237, 0.35);
         transition: all 0.3s ease;
     }
     .stButton>button:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+        box-shadow: 0 6px 20px rgba(6, 182, 212, 0.45);
     }
 
     /* Box Hasil Markdown */
     div[data-testid="stMarkdownContainer"] p {
-        color: #e2e8f0;
+        color: #1e293b;
     }
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🔮 AI BUSINESS FORTUNE TELLER")
+# --- ANIMASI BOLA KRISTAL BERGERAK ---
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    st.image(
+        "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWc1b3N6bXZyeGF3MnV4OGd5ZnQ4Z2NzaWc4aDlhMnEzZ3ZtdnA3ZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/3o7TKsjLu182aQvNbc/giphy.gif",
+        use_container_width=True
+    )
+
+st.title("AI BUSINESS FORTUNE TELLER")
 st.caption("Ramal Potensi Bisnis Masa Depanmu Berdasarkan 3 Kartu Modalku! (Teori Effectuation)")
 
 # --- DAFTAR PILIHAN DROPDOWN ---
@@ -204,7 +214,7 @@ if submitted:
 
             3. **[Kategori Bisnis Opsi 3]**
                - **Gambaran Bisnis:** [Penjelasan singkat 1-2 kalimat]
-               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok meggunakan modalnya]
+               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok dengan kombinasi modalnya]
 
             ---
             💡 *Pilih salah satu ide di atas yang paling bikin kamu bersemangat untuk memulainya!*

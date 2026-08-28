@@ -128,62 +128,62 @@ with col2:
 
 st.title("AI BUSINESS POTENTIAL NAVIGATOR")
 
-# Subtitle Rata Tengah (Nama Profesor Dibuat 1 Baris Utuh)
+# Subtitle Rata Tengah
 st.markdown("""
     <div class="academic-subtitle">
         Asisten Berbasis Artificial Intelligence (AI) yang Dikembangkan oleh Program Studi Manajemen Universitas Nasional Karangturi Semarang untuk Menganalisis Potensi Bisnis Generasi Muda Berdasarkan Teori Effectuation (<span class="nowrap-text">Prof. Saras D. Sarasvathy, Ph.D. - University of Virginia</span>).
     </div>
 """, unsafe_allow_html=True)
 
-# --- DAFTAR PILIHAN DROPDOWN ---
+# --- DAFTAR PILIHAN DROPDOWN (LEBIH UMUM) ---
 
 WHO_OPTIONS = [
-    "📱 Suka bikin konten TikTok / Reels & hits",
-    "👗 Ngerti & update tren fashion / hijab",
+    "📱 Suka bikin konten media sosial / video kreatif",
+    "👗 Tertarik dengan tren fashion & apparel",
     "🗣️ Komunikatif, percaya diri & ramah",
-    "🎮 Hobi gaming & paham dunia E-sports",
-    "🎨 Kreatif, suka menggambar / seni visual",
-    "🍰 Suka masak / bikin kue & kulineran",
-    "🛍️ Gemar jualan / nawarin barang ke teman",
-    "✈️ Suka jalan-jalan & foto-foto estetis",
-    "🌱 Peduli isu lingkungan & produk ramah lingkungan",
-    "🎧 Suka dengerin musik & paham tren Gen-Z"
+    "🎮 Hobi gaming & paham tren teknologi/E-sports",
+    "🎨 Kreatif, suka menggambar / seni visual & desain",
+    "🍰 Suka memasak / eksplorasi kuliner",
+    "🛍️ Gemar bernegosiasi & menawarkan barang ke teman",
+    "✈️ Suka fotografi & eksplorasi tempat baru",
+    "🌱 Peduli gaya hidup sehat & produk ramah lingkungan",
+    "🎧 Mengikuti tren pop culture, musik & gaya hidup generasi muda"
 ]
 
 WHAT_OPTIONS = [
-    "📚 Anak IPS (Paham ekonomi, bisnis & sosial)",
-    "🔬 Anak IPA (Paham sains, logika & analitikal)",
-    "💻 Anak SMK / TKJ / DKV (Teknologi, Desain, Coding)",
-    "🎤 Jago Public Speaking & Presentasi",
-    "📈 Mengerti algoritma medsos & tren viral",
-    "🎬 Bisa edit foto & video pro di HP (CapCut/Canva)",
-    "✍️ Jago copywriting, nulis & bercerita (Storytelling)",
-    "🧮 Jago hitung-hitungan & manajemen keuangan",
-    "🌐 Menguasai bahasa asing (Inggris/Korea/Jepang)",
-    "💡 Selalu punya ide unik & solusi kreatif"
+    "📚 Pemahaman ilmu sosial, ekonomi & bisnis dasar",
+    "🔬 Pemahaman sains, logika & analitikal",
+    "💻 Keterampilan teknologi, desain grafis & digital",
+    "🎤 Kemampuan public speaking & presentasi",
+    "📈 Pemahaman tren digital & media sosial",
+    "🎬 Kemampuan editing foto & video",
+    "✍️ Kemampuan menulis kreatif & copywriting",
+    "🧮 Keterampilan perhitungan & manajemen keuangan dasar",
+    "🌐 Menguasai bahasa asing (Inggris/Lainnya)",
+    "💡 Kemampuan pemecahan masalah & ide inovatif"
 ]
 
 WHOM_OPTIONS = [
-    "📸 Punya teman/saudara jago fotografi & videografi",
-    "🧵 Orang tua/kerabat punya usaha konveksi / toko / UMKM",
-    "🛍️ Teman-teman sekolah konsumtif & suka barang viral",
-    "🌟 Punya kenalan selebgram / influencer lokal",
-    "👥 Punya jaringan komunitas hobi / OSIS / Remaja Masjid",
-    "🚚 Akses mudah ke supplier grosir / pasar pusat",
-    "💻 Punya teman jago bikin website / koding",
-    "📊 Orang tua / kenalan paham akuntansi & legalitas",
-    "🤝 Teman-teman sekelas sangat kompak & suportif",
-    "🏫 Punya akses ke acara pameran / bazar sekolah"
+    "📸 Punya rekan/saudara yang jago fotografi & videografi",
+    "🧵 Kerabat/keluarga memiliki bisnis/UMKM",
+    "🛍️ Teman sebaya yang konsumtif & menyukai barang tren",
+    "🌟 Memiliki akses/kontak dengan pembuat konten (content creator)",
+    "👥 Aktif di organisasi sekolah / komunitas pemuda",
+    "🚚 Akses mudah ke distributor grosir / pasar utama",
+    "💻 Punya rekan yang mahir di bidang IT / pembuatan website",
+    "📊 Memiliki relasi yang berpengalaman di bidang manajemen/hukum",
+    "🤝 Komunitas / teman sekelas yang kompak & suportif",
+    "🏫 Akses untuk berpartisipasi di bazar / pameran"
 ]
 
 TARGET_OPTIONS = [
-    "Mau punya bisnis sendiri saat kuliah",
-    "Ingin dapat penghasilan tambahan pas sekolah",
-    "Membangun brand fashion / skincare sendiri",
-    "Bikin agency digital / content creator team",
-    "Mengembangkan usaha orang tua / keluarga",
-    "Bikin usaha kuliner kekinian",
-    "Bikin startup teknologi / aplikasi"
+    "Membangun bisnis mandiri saat berkuliah",
+    "Mendapatkan penghasilan tambahan saat sekolah/kuliah",
+    "Membangun brand produk (fashion/skincare/lifestyle) sendiri",
+    "Mendirikan agensi kreatif / penyedia jasa digital",
+    "Mengembangkan bisnis keluarga / UMKM lokal",
+    "Mendirikan usaha kuliner modern",
+    "Mengembangkan bisnis berbasis teknologi / aplikasi"
 ]
 
 # --- FORM INPUT ---
@@ -204,17 +204,17 @@ with st.form("fortune_form"):
     st.subheader("🃏 Pilih Kartu Modal Kamu (Bisa Pilih Banyak)")
     
     selected_who = st.multiselect(
-        "Kartu 1: Who I Am (Siapa Kamu / Hobi)", 
+        "Kartu 1: Who I Am (Karakter / Minat / Hobi)", 
         WHO_OPTIONS,
         key=f"who_{reset_key}"
     )
     selected_what = st.multiselect(
-        "Kartu 2: What I Know (Keahlian / Jurusan)", 
+        "Kartu 2: What I Know (Pengetahuan & Keahlian)", 
         WHAT_OPTIONS,
         key=f"what_{reset_key}"
     )
     selected_whom = st.multiselect(
-        "Kartu 3: Whom I Know (Relasi / Akses)", 
+        "Kartu 3: Whom I Know (Jaringan & Akses Relasi)", 
         WHOM_OPTIONS,
         key=f"whom_{reset_key}"
     )

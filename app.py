@@ -11,6 +11,13 @@ st.set_page_config(
 
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
 
+# --- INITALIZE SESSION STATE UNTUK RESET ---
+if "form_reset_key" not in st.session_state:
+    st.session_state.form_reset_key = 0
+
+def clear_form():
+    st.session_state.form_reset_key += 1
+
 # --- STYLING UI ACADEMIC THEME (MAROON & GOLD) ---
 st.markdown("""
     <style>
@@ -96,7 +103,7 @@ st.markdown("""
         border-radius: 12px;
         padding: 14px;
         border: 2px solid #D4AF37;
-        font-size: 18px;
+        font-size: 16px;
         box-shadow: 0 4px 14px rgba(122, 28, 28, 0.35);
         transition: all 0.3s ease;
     }
@@ -180,19 +187,47 @@ TARGET_OPTIONS = [
 ]
 
 # --- FORM INPUT ---
+reset_key = st.session_state.form_reset_key
+
 with st.form("fortune_form"):
-    nama = st.text_input("Nama Kamu & Asal Sekolah (Opsional)", placeholder="Contoh: Budi - SMAN 1")
-    target = st.selectbox("🎯 Target Impian Kamu", TARGET_OPTIONS)
+    nama = st.text_input(
+        "Nama Kamu & Asal Sekolah (Opsional)", 
+        placeholder="Contoh: Budi - SMAN 1",
+        key=f"nama_{reset_key}"
+    )
+    target = st.selectbox(
+        "🎯 Target Impian Kamu", 
+        TARGET_OPTIONS,
+        key=f"target_{reset_key}"
+    )
     
     st.subheader("🃏 Pilih Kartu Modal Kamu (Bisa Pilih Banyak)")
     
-    selected_who = st.multiselect("Kartu 1: Who I Am (Siapa Kamu / Hobi)", WHO_OPTIONS)
-    selected_what = st.multiselect("Kartu 2: What I Know (Keahlian / Jurusan)", WHAT_OPTIONS)
-    selected_whom = st.multiselect("Kartu 3: Whom I Know (Relasi / Akses)", WHOM_OPTIONS)
+    selected_who = st.multiselect(
+        "Kartu 1: Who I Am (Siapa Kamu / Hobi)", 
+        WHO_OPTIONS,
+        key=f"who_{reset_key}"
+    )
+    selected_what = st.multiselect(
+        "Kartu 2: What I Know (Keahlian / Jurusan)", 
+        WHAT_OPTIONS,
+        key=f"what_{reset_key}"
+    )
+    selected_whom = st.multiselect(
+        "Kartu 3: Whom I Know (Relasi / Akses)", 
+        WHOM_OPTIONS,
+        key=f"whom_{reset_key}"
+    )
     
-    submitted = st.form_submit_button("✨ ANALISIS POTENSI BISNIS SEKARANG!")
+    # Grid 2 Kolom untuk Tombol
+    btn_col1, btn_col2 = st.columns([3, 1])
+    
+    with btn_col1:
+        submitted = st.form_submit_button("✨ ANALISIS POTENSI BISNIS SEKARANG!")
+    with btn_col2:
+        cleared = st.form_submit_button("🗑️ CLEAR", on_click=clear_form)
 
-if submitted:
+if submitted and not cleared:
     if not selected_who and not selected_what and not selected_whom:
         st.warning("Pilih minimal satu opsi dari kartu modal kamu!")
     elif not GROQ_API_KEY:

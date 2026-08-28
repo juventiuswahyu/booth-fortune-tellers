@@ -10,132 +10,41 @@ st.set_page_config(
 )
 
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
+GSHEET_WEBAPP_URL = st.secrets.get("GSHEET_WEBAPP_URL", os.environ.get("GSHEET_WEBAPP_URL", ""))
 
-# --- INITALIZE SESSION STATE UNTUK RESET ---
 if "form_reset_key" not in st.session_state:
     st.session_state.form_reset_key = 0
 
 def clear_form():
     st.session_state.form_reset_key += 1
 
-# --- STYLING UI ACADEMIC THEME (MAROON & GOLD) ---
+# --- STYLING UI ---
 st.markdown("""
     <style>
-    /* Latar Belakang Utama Halaman */
-    .stApp {
-        background-color: #f8fafc;
-        color: #0f172a;
-    }
-    
-    /* Title Utama (Merah Maroon) */
-    h1 {
-        color: #7A1C1C !important;
-        text-align: center;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        font-weight: 800;
-        margin-top: 5px;
-        letter-spacing: 0.5px;
-    }
-    
-    /* Subtitle Akademik Rata Tengah */
-    .academic-subtitle {
-        text-align: center;
-        color: #475569;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 1.6;
-        margin-bottom: 25px;
-        padding: 0 10px;
-    }
-
-    /* Kunci nama agar 1 baris utuh */
-    .nowrap-text {
-        white-space: nowrap;
-    }
-
-    /* Container Form Input dengan Frame GOLD */
-    div[data-testid="stForm"] {
-        background-color: #ffffff !important;
-        border: 3px solid #D4AF37 !important; /* Warna Gold */
-        border-radius: 20px !important;
-        padding: 24px !important;
-        box-shadow: 0 10px 25px -5px rgba(212, 175, 55, 0.2);
-    }
-
-    /* Label Input */
-    label, div[data-testid="stWidgetLabel"] p {
-        color: #334155 !important;
-        font-weight: 700 !important;
-    }
-
-    /* Input Text & Selectbox Background */
-    div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-        background-color: #f8fafc !important;
-        border-color: #cbd5e1 !important;
-        color: #0f172a !important;
-        border-radius: 10px !important;
-    }
-
-    /* Tag Pilihan Multiselect (Chips) - Warna Maroon & Gold Accent */
-    span[data-baseweb="tag"] {
-        background: linear-gradient(135deg, #7A1C1C 0%, #A32A2A 100%) !important;
-        border-radius: 8px !important;
-        border: 1px solid #D4AF37 !important;
-    }
-    span[data-baseweb="tag"] span {
-        color: #ffffff !important;
-        font-weight: 600;
-    }
-
-    /* Subheader di Dalam Form (Merah Maroon) */
-    h3 {
-        color: #7A1C1C !important;
-        font-size: 1.2rem !important;
-        font-weight: 700 !important;
-    }
-
-    /* Tombol Utama (Button Maroon - Gold) */
-    .stButton>button {
-        width: 100%;
-        background: linear-gradient(135deg, #7A1C1C 0%, #A32A2A 100%);
-        color: #ffffff;
-        font-weight: bold;
-        border-radius: 12px;
-        padding: 14px;
-        border: 2px solid #D4AF37;
-        font-size: 16px;
-        box-shadow: 0 4px 14px rgba(122, 28, 28, 0.35);
-        transition: all 0.3s ease;
-    }
-    .stButton>button:hover {
-        transform: translateY(-2px);
-        background: linear-gradient(135deg, #8C2222 0%, #B83232 100%);
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
-    }
-
-    /* Box Hasil Markdown */
-    div[data-testid="stMarkdownContainer"] p {
-        color: #1e293b;
-    }
+    .stApp { background-color: #f8fafc; color: #0f172a; }
+    h1 { color: #7A1C1C !important; text-align: center; font-weight: 800; }
+    .academic-subtitle { text-align: center; color: #475569; font-size: 14px; margin-bottom: 25px; }
+    .nowrap-text { white-space: nowrap; }
+    div[data-testid="stForm"] { background-color: #ffffff !important; border: 3px solid #D4AF37 !important; border-radius: 20px !important; padding: 24px !important; }
+    label, div[data-testid="stWidgetLabel"] p { color: #334155 !important; font-weight: 700 !important; }
+    span[data-baseweb="tag"] { background: linear-gradient(135deg, #7A1C1C 0%, #A32A2A 100%) !important; border: 1px solid #D4AF37 !important; }
+    span[data-baseweb="tag"] span { color: #ffffff !important; font-weight: 600; }
+    h3 { color: #7A1C1C !important; font-size: 1.2rem !important; font-weight: 700 !important; }
+    .stButton>button { width: 100%; background: linear-gradient(135deg, #7A1C1C 0%, #A32A2A 100%); color: #ffffff; font-weight: bold; border-radius: 12px; padding: 14px; border: 2px solid #D4AF37; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- MENAMPILKAN LOGO DI TENGAH ---
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     if os.path.exists("giphy.gif"):
         st.image("giphy.gif", use_container_width=True)
 
 st.title("AI BUSINESS POTENTIAL NAVIGATOR")
-
-# Subtitle Rata Tengah
 st.markdown("""
     <div class="academic-subtitle">
         Asisten Berbasis Artificial Intelligence (AI) yang Dikembangkan oleh Program Studi Manajemen Universitas Nasional Karangturi Semarang untuk Menganalisis Potensi Bisnis Generasi Muda Berdasarkan Teori Effectuation (<span class="nowrap-text">Prof. Saras D. Sarasvathy, Ph.D. - University of Virginia</span>).
     </div>
 """, unsafe_allow_html=True)
-
-# --- DAFTAR PILIHAN DROPDOWN (LEBIH UMUM) ---
 
 WHO_OPTIONS = [
     "📱 Suka bikin konten media sosial / video kreatif",
@@ -186,42 +95,18 @@ TARGET_OPTIONS = [
     "Mengembangkan bisnis berbasis teknologi / aplikasi"
 ]
 
-# --- FORM INPUT ---
 reset_key = st.session_state.form_reset_key
 
 with st.form("fortune_form"):
-    nama = st.text_input(
-        "Nama Kamu & Asal Sekolah (Opsional)", 
-        placeholder="Contoh: Budi - SMAN 1",
-        key=f"nama_{reset_key}"
-    )
-    target = st.selectbox(
-        "🎯 Target Impian Kamu", 
-        TARGET_OPTIONS,
-        key=f"target_{reset_key}"
-    )
+    nama = st.text_input("Nama Kamu & Asal Sekolah (Opsional)", placeholder="Contoh: Budi - SMAN 1", key=f"nama_{reset_key}")
+    target = st.selectbox("🎯 Target Impian Kamu", TARGET_OPTIONS, key=f"target_{reset_key}")
     
     st.subheader("🃏 Pilih Kartu Modal Kamu (Bisa Pilih Banyak)")
+    selected_who = st.multiselect("Kartu 1: Who I Am (Karakter / Minat / Hobi)", WHO_OPTIONS, key=f"who_{reset_key}")
+    selected_what = st.multiselect("Kartu 2: What I Know (Pengetahuan & Keahlian)", WHAT_OPTIONS, key=f"what_{reset_key}")
+    selected_whom = st.multiselect("Kartu 3: Whom I Know (Jaringan & Akses Relasi)", WHOM_OPTIONS, key=f"whom_{reset_key}")
     
-    selected_who = st.multiselect(
-        "Kartu 1: Who I Am (Karakter / Minat / Hobi)", 
-        WHO_OPTIONS,
-        key=f"who_{reset_key}"
-    )
-    selected_what = st.multiselect(
-        "Kartu 2: What I Know (Pengetahuan & Keahlian)", 
-        WHAT_OPTIONS,
-        key=f"what_{reset_key}"
-    )
-    selected_whom = st.multiselect(
-        "Kartu 3: Whom I Know (Jaringan & Akses Relasi)", 
-        WHOM_OPTIONS,
-        key=f"whom_{reset_key}"
-    )
-    
-    # Grid 2 Kolom untuk Tombol
     btn_col1, btn_col2 = st.columns([3, 1])
-    
     with btn_col1:
         submitted = st.form_submit_button("✨ ANALISIS POTENSI BISNIS SEKARANG!")
     with btn_col2:
@@ -248,32 +133,25 @@ if submitted and not cleared:
             - Kartu 2 (What I Know): {what_str}
             - Kartu 3 (Whom I Know): {whom_str}
 
-            INSTRUKSI OUTPUT:
-            - JANGAN membuat nama merek buatan (misal: Nomad Glow, TechWear, dll). Sebutkan jenis/kategori bisnisnya saja.
-            - Berikan 3 opsi rekomendasi bisnis yang realistis & relevan dari modal siswa.
-            - Gunakan bahasa kasual, ramah anak muda, dan suportif.
-
             Format output HANYA gunakan Markdown seperti ini:
 
             ### 🎓 Hasil Analisis Rekomendasi Bisnis
 
             1. **[Kategori Bisnis Opsi 1]**
                - **Gambaran Bisnis:** [Penjelasan singkat 1-2 kalimat]
-               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok dengan kombinasi modalnya]
+               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok]
 
             2. **[Kategori Bisnis Opsi 2]**
                - **Gambaran Bisnis:** [Penjelasan singkat 1-2 kalimat]
-               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok dengan kombinasi modalnya]
+               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok]
 
             3. **[Kategori Bisnis Opsi 3]**
                - **Gambaran Bisnis:** [Penjelasan singkat 1-2 kalimat]
-               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok dengan kombinasi modalnya]
-
-            ---
-            💡 *Pilih salah satu ide di atas yang paling bikin kamu bersemangat untuk memulainya!*
+               - **Alasan Cocok:** [Penjelasan singkat mengapa cocok]
             """
 
             try:
+                # 1. Kirim Prompt ke Groq API
                 req_data = json.dumps({
                     "model": "openai/gpt-oss-20b",
                     "messages": [{"role": "user", "content": prompt}],
@@ -296,5 +174,24 @@ if submitted and not cleared:
                     
                     st.success("Analisis Selesai!")
                     st.markdown(ai_result)
+
+                # 2. Simpan Otomatis ke Google Sheets (jika URL diset)
+                if GSHEET_WEBAPP_URL:
+                    payload = json.dumps({
+                        "nama": nama if nama else "Siswa",
+                        "target": target,
+                        "who": who_str,
+                        "what": what_str,
+                        "whom": whom_str,
+                        "hasil": ai_result
+                    }).encode('utf-8')
+
+                    gsheet_req = urllib.request.Request(
+                        GSHEET_WEBAPP_URL,
+                        headers={"Content-Type": "application/json"},
+                        data=payload
+                    )
+                    urllib.request.urlopen(gsheet_req)
+
             except Exception as e:
-                st.error(f"Gagal memproses analisis: {str(e)}")
+                st.error(f"Gagal memproses data: {str(e)}")

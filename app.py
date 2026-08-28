@@ -3,17 +3,14 @@ import json
 import urllib.request
 import os
 
-# Konfigurasi Halaman Streamlit
 st.set_page_config(
     page_title="AI Business Fortune Teller",
     page_icon="🔮",
     layout="centered"
 )
 
-# Membaca API Key dari Streamlit Secrets atau Environment Variable
 GROQ_API_KEY = st.secrets.get("GROQ_API_KEY", os.environ.get("GROQ_API_KEY", ""))
 
-# Styling Tampilan Neon / Futuristic
 st.markdown("""
     <style>
     .main { background-color: #0b0719; }
@@ -72,6 +69,12 @@ if submitted:
             """
 
             try:
+                req_data = json.dumps({
+                    "model": "openai/gpt-oss-20b",
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.7
+                }).encode('utf-8')
+
                 groq_req = urllib.request.Request(
                     "https://api.groq.com/openai/v1/chat/completions",
                     headers={
@@ -79,12 +82,9 @@ if submitted:
                         "Content-Type": "application/json",
                         "User-Agent": "Mozilla/5.0"
                     },
-                    data=json.dumps({
-                        "model": "llama-3.3-70b-versatile",
-                        "messages": [{"role": "user", "content": prompt}],
-                        "temperature": 0.8
-                    }).encode('utf-8')
+                    data=req_data
                 )
+
                 with urllib.request.urlopen(groq_req) as response:
                     res_data = json.loads(response.read().decode('utf-8'))
                     ai_result = res_data['choices'][0]['message']['content']

@@ -3,21 +3,21 @@ import socketserver
 import json
 import urllib.request
 import os
-import webbrowser
 
-# 1. Baca API Key dari file .env (tanpa perlu install library tambahan)
-GROQ_API_KEY = ""
-if os.path.exists(".env"):
+# Membaca GROQ_API_KEY dari Environment Variable (Render/Server) atau file .env (Lokal)
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
+
+if not GROQ_API_KEY and os.path.exists(".env"):
     with open(".env", "r") as f:
         for line in f:
             if line.startswith("GROQ_API_KEY="):
                 GROQ_API_KEY = line.strip().split("=", 1)[1].strip('"\'')
 
-# HTML Page (Tampilan UI Neon Cyberpunk + Effectuation Theory)
 HTML_CONTENT = """<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Business Fortune Teller - Stand Booth</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -69,7 +69,7 @@ HTML_CONTENT = """<!DOCTYPE html>
 
     <main class="max-w-4xl mx-auto w-full flex-grow my-4">
         
-        <!-- Form Input 3 Kartu (Bird in Hand) -->
+        <!-- Form Input -->
         <div id="inputSection" class="space-y-6">
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
@@ -84,8 +84,8 @@ HTML_CONTENT = """<!DOCTYPE html>
                 </div>
             </div>
 
+            <!-- 3 Kartu Effectuation -->
             <div class="grid md:grid-cols-3 gap-4">
-                <!-- Card 1 -->
                 <div class="neon-card rounded-2xl p-5">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 rounded-xl bg-purple-600/30 flex items-center justify-center text-purple-400 text-lg">
@@ -101,7 +101,6 @@ HTML_CONTENT = """<!DOCTYPE html>
                               class="w-full bg-slate-950/60 border border-purple-500/20 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-purple-400 resize-none"></textarea>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="neon-card rounded-2xl p-5">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 rounded-xl bg-cyan-600/30 flex items-center justify-center text-cyan-400 text-lg">
@@ -117,7 +116,6 @@ HTML_CONTENT = """<!DOCTYPE html>
                               class="w-full bg-slate-950/60 border border-cyan-500/20 rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-cyan-400 resize-none"></textarea>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="neon-card rounded-2xl p-5">
                     <div class="flex items-center gap-3 mb-3">
                         <div class="w-10 h-10 rounded-xl bg-pink-600/30 flex items-center justify-center text-pink-400 text-lg">
@@ -225,14 +223,13 @@ HTML_CONTENT = """<!DOCTYPE html>
                 document.getElementById("resultContent").innerHTML = data.result;
 
             } catch (error) {
-                alert("Gagal terhubung ke server local Python.");
+                alert("Gagal terhubung ke server.");
                 resetForm();
             }
         }
 
         function resetForm() {
             document.getElementById("resultSection").classList.add("hidden");
-            document.getElementById("loadingState").classList.remove("hidden");
             document.getElementById("loadingState").classList.add("hidden");
             document.getElementById("inputSection").classList.remove("hidden");
         }
@@ -241,7 +238,6 @@ HTML_CONTENT = """<!DOCTYPE html>
 </html>
 """
 
-# 2. Server Backend (Penangan API tanpa dependensi eksternal)
 class SimpleHandler(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
@@ -256,10 +252,9 @@ class SimpleHandler(http.server.BaseHTTPRequestHandler):
             body = json.loads(post_data.decode('utf-8'))
 
             if not GROQ_API_KEY:
-                self.send_json_response({"error": "API Key tidak ditemukan di file .env!"}, 500)
+                self.send_json_response({"error": "GROQ_API_KEY belum dikonfigurasi di Environment Variable Render!"}, 500)
                 return
 
-            # Prompt Teori Bird-in-Hand
             prompt = f"""
             Kamu adalah AI "Business Fortune Teller" inspiratif untuk prodi Kewirausahaan.
             Gunakan Teori Effectuation dari Saras Sarasvathy (Prinsip "Bird-in-Hand").
@@ -271,7 +266,7 @@ class SimpleHandler(http.server.BaseHTTPRequestHandler):
             - Modal Kartu 2 (What I Know): {body.get('what')}
             - Modal Kartu 3 (Whom I Know): {body.get('whom')}
 
-            Buatkan hasil ramalan bisnis format HTML (tanpa tag ```html, buat lansung elemen div/h3/p):
+            Buatkan hasil ramalan bisnis format HTML (tanpa tag ```html, langsung buat elemen HTML seperti div, h3, p):
             1. **Julukan Bisnis Masa Depan** (Keren & Futuristik)
             2. **Konsep Bisnis 'Bird-in-Hand'** (Gunakan gabungan modal mereka).
             3. **Skor Potensi Ide** (Tampilkan Keunikan % & Kemudahan Eksekusi % dengan desain angka tebal).
@@ -280,7 +275,6 @@ class SimpleHandler(http.server.BaseHTTPRequestHandler):
             Gunakan bahasa kasual, penuh semangat anak muda, dan memotivasi.
             """
 
-            # Kirim request ke API Groq menggunakan urllib standar
             groq_req = urllib.request.Request(
                 "[https://api.groq.com/openai/v1/chat/completions](https://api.groq.com/openai/v1/chat/completions)",
                 headers={
@@ -310,8 +304,7 @@ class SimpleHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(json.dumps(data).encode('utf-8'))
 
 if __name__ == "__main__":
-    PORT = 8000
-    print(f"🚀 Application starting at http://localhost:{PORT}")
-    webbrowser.open(f"http://localhost:{PORT}")
-    with socketserver.TCPServer(("", PORT), SimpleHandler) as httpd:
+    PORT = int(os.environ.get("PORT", 8000))
+    print(f"🚀 Application starting on port {PORT}")
+    with socketserver.TCPServer(("0.0.0.0", PORT), SimpleHandler) as httpd:
         httpd.serve_forever()

@@ -41,6 +41,11 @@ st.markdown("""
         padding: 0 10px;
     }
 
+    /* Kunci nama agar 1 baris utuh */
+    .nowrap-text {
+        white-space: nowrap;
+    }
+
     /* Container Form Input dengan Frame GOLD */
     div[data-testid="stForm"] {
         background-color: #ffffff !important;
@@ -116,10 +121,10 @@ with col2:
 
 st.title("AI BUSINESS POTENTIAL NAVIGATOR")
 
-# Subtitle Rata Tengah (Center)
+# Subtitle Rata Tengah (Nama Profesor Dibuat 1 Baris Utuh)
 st.markdown("""
     <div class="academic-subtitle">
-        Asisten Berbasis Artificial Intelligence (AI) yang Dikembangkan oleh Program Studi Manajemen Universitas Nasional Karangturi Semarang untuk Menganalisis Potensi Bisnis Generasi Muda Berdasarkan Teori Effectuation (Prof. Saras D. Sarasvathy, Ph.D. - University of Virginia).
+        Asisten Berbasis Artificial Intelligence (AI) yang Dikembangkan oleh Program Studi Manajemen Universitas Nasional Karangturi Semarang untuk Menganalisis Potensi Bisnis Generasi Muda Berdasarkan Teori Effectuation (<span class="nowrap-text">Prof. Saras D. Sarasvathy, Ph.D. - University of Virginia</span>).
     </div>
 """, unsafe_allow_html=True)
 
